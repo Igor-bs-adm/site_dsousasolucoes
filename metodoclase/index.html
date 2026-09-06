@@ -43,6 +43,34 @@
   @media(min-width:720px){ .wrap{padding:0 48px;} }
   section{padding:72px 0;}
 
+  /* ---------- TEXTURA DE FUNDO (respiração lenta) ----------
+     Camada fixa atrás de tudo: malha fina que faz zoom in/out em ciclo longo.
+     Só transform é animado, então roda no compositor. */
+  .bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(237,232,222,0.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(237,232,222,0.05) 1px,transparent 1px);
+    background-size:68px 68px;
+    background-position:center;
+    transform-origin:center;
+    animation:respira 38s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  .bg::after{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(115% 70% at 50% -10%,rgba(196,82,63,0.11),transparent 62%),
+      radial-gradient(90% 55% at 85% 105%,rgba(201,162,39,0.07),transparent 60%);
+    animation:respira-luz 46s ease-in-out infinite alternate;
+  }
+  @keyframes respira{ from{transform:scale(1);} to{transform:scale(1.09);} }
+  @keyframes respira-luz{ from{transform:scale(1.06);} to{transform:scale(1);} }
+  .topbar,.rail,main,footer{position:relative;z-index:1;}
+  /* painéis levemente translúcidos: a malha continua perceptível por baixo */
+  .cena,.pilares,.prova{background:rgba(27,32,38,0.90);}
+  .oferta{background:rgba(32,38,45,0.92);}
+
   a:focus-visible,.skip:focus{
     outline:2px solid var(--gold);outline-offset:3px;border-radius:var(--radius);
   }
@@ -77,8 +105,8 @@
   /* ---------- RÉGUA CLASE (sticky) ---------- */
   .rail{
     position:sticky;top:0;z-index:60;
-    background:rgba(20,24,28,0.94);
-    backdrop-filter:blur(8px);
+    background:rgba(20,24,28,0.975);
+    backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
     min-height:var(--rail-h);
     display:flex;align-items:center;
@@ -107,9 +135,10 @@
   }
   @media(min-width:520px){ .rail-bar{width:96px;} }
   .rail-bar i{
-    position:absolute;inset:0 auto 0 0;width:0%;
+    position:absolute;inset:0;width:100%;
     background:linear-gradient(90deg,var(--brick),var(--gold));
-    transition:width .5s var(--ease);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .5s var(--ease);
   }
   .rail-val{
     font-variant-numeric:tabular-nums;color:var(--cream);letter-spacing:0.04em;min-width:3.4em;text-align:right;
@@ -253,7 +282,7 @@
   .causa{
     padding:16px 18px;border:1px solid var(--line);
     color:var(--muted);font-size:0.92rem;
-    transition:border-color .3s var(--ease),color .3s var(--ease);
+    transition:border-color .3s var(--ease),color .3s var(--ease),transform .3s var(--ease);
   }
   .causa:hover{border-color:var(--line-strong);color:var(--cream);}
   .js .causa{transition-duration:.5s;}
@@ -381,6 +410,22 @@
   @media(min-width:720px){ .final h2{font-size:2.4rem;} }
   .final p{color:var(--muted);max-width:48ch;margin-bottom:32px;}
 
+  .nota{
+    margin-top:48px;padding-top:22px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:0.86rem;max-width:54ch;
+  }
+
+  /* ---------- MOVIMENTOS SUTIS ---------- */
+  .causa{transform:translateY(0);}
+  .causa:hover{transform:translateY(-2px);}
+  .btn-primary,.btn-ghost,.topbar-cta{transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease),transform .2s var(--ease);}
+  .btn-primary:hover,.btn-ghost:hover,.topbar-cta:hover{transform:translateY(-2px);}
+  .btn-primary:active,.btn-ghost:active,.topbar-cta:active{transform:translateY(0);}
+  .pilar-letra{transform-origin:left center;}
+  .pilar.now .pilar-letra{transform:scale(1.08);}
+  .diag:hover{transform:translateY(-2px);}
+  .diag{transform:translateY(0);transition:border-color .4s var(--ease),transform .3s var(--ease);}
+
   footer{border-top:1px solid var(--line);padding:28px 0 40px;}
   .footer-inner{color:var(--muted);font-size:0.8rem;display:flex;flex-direction:column;gap:6px;}
   @media(min-width:720px){ .footer-inner{flex-direction:row;justify-content:space-between;} }
@@ -395,13 +440,18 @@
     .js .pv .pop{opacity:1!important;}
     .js .pv .slide{transform:none!important;}
     .rail{transition:none;}
-    *,*::before,*::after{transition-duration:.001ms!important;transition-delay:0ms!important;animation-duration:.001ms!important;}
+    .bg,.bg::after{animation:none!important;transform:none!important;}
+    .causa:hover,.diag:hover,.btn-primary:hover,.btn-ghost:hover,.topbar-cta:hover,
+    .pilar.now .pilar-letra{transform:none!important;}
+    *,*::before,*::after{transition-duration:.001ms!important;transition-delay:0ms!important;animation-duration:.001ms!important;animation-iteration-count:1!important;}
   }
 </style>
 </head>
 <body>
 
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<div class="bg" aria-hidden="true"></div>
 
 <div class="topbar">
   <div class="wrap topbar-inner">
@@ -630,6 +680,7 @@
     <h2 class="rv">Estoque confiável gera decisões confiáveis.</h2>
     <p class="rv">Me conte em uma mensagem como está o estoque da sua operação hoje. A partir disso eu te explico como a turma funciona e se ela faz sentido para o seu caso.</p>
     <a class="btn-primary rv" href="https://wa.me/556696029950?text=Ol%C3%A1%20Igor%2C%20vim%20pela%20p%C3%A1gina%20do%20M%C3%A9todo%20CLASE." target="_blank" rel="noopener">Falar no WhatsApp</a>
+    <p class="nota rv">O método oferece o caminho. O resultado depende de como cada operação aplica, acompanha e sustenta suas práticas.</p>
   </div>
 </section>
 
@@ -686,44 +737,83 @@
     var barra = document.getElementById('railBar');
     var valor = document.getElementById('railVal');
     var pilares = document.querySelectorAll('.pilar');
-    var atual = PASSOS[0], anim = null;
+    var PRIMEIRO = PASSOS[0];
+    var FAIXA = PASSOS[PASSOS.length - 1] - PRIMEIRO;
+    var exibido = PRIMEIRO;   /* valor que está de fato na tela */
+    var destino = PRIMEIRO;   /* valor para onde a animação corrente vai */
+    var ativo = -1;
+    var anim = null;
 
-    var anima = function (de, para, dur, aplica) {
-      if (reduce) { aplica(para); return; }
-      if (anim) { cancelAnimationFrame(anim); }
+    var pinta = function (v) {
+      exibido = v;
+      if (valor) { valor.textContent = v + '%'; }
+      /* scaleX em vez de width: anima no compositor, sem recalcular layout */
+      if (barra) { barra.style.transform = 'scaleX(' + ((v - PRIMEIRO) / FAIXA) + ')'; }
+    };
+
+    /* Interpola SEMPRE a partir do valor renderizado, nunca do destino anterior:
+       se uma animação for cancelada no meio (troca rápida de pilar), a próxima
+       continua de onde o número parou, sem salto. */
+    var anima = function (para, dur) {
+      if (anim) { cancelAnimationFrame(anim); anim = null; }
+      var de = exibido;
+      if (reduce || de === para) { pinta(para); return; }
       var t0 = null;
       var passo = function (t) {
         if (t0 === null) { t0 = t; }
         var p = Math.min(1, (t - t0) / dur);
         var e = 1 - Math.pow(1 - p, 3);
-        aplica(Math.round(de + (para - de) * e));
-        if (p < 1) { anim = requestAnimationFrame(passo); }
+        pinta(Math.round(de + (para - de) * e));
+        if (p < 1) { anim = requestAnimationFrame(passo); } else { anim = null; }
       };
       anim = requestAnimationFrame(passo);
     };
 
-    var pinta = function (v) {
-      if (valor) { valor.textContent = v + '%'; }
-      if (barra) { barra.style.width = ((v - PASSOS[0]) / (PASSOS[PASSOS.length - 1] - PASSOS[0]) * 100) + '%'; }
-    };
-
+    /* i = -1 significa "antes do primeiro pilar": nada percorrido ainda. */
     var ativa = function (i) {
+      if (i === ativo) { return; }
+      ativo = i;
       each(letras, function (l, k) {
-        l.classList.toggle('on', k <= i);
+        l.classList.toggle('on', i >= 0 && k <= i);
         l.classList.toggle('now', k === i);
       });
       each(pilares, function (p, k) { p.classList.toggle('now', k === i); });
       var alvo = PASSOS[i + 1];
-      if (alvo !== atual) { anima(atual, alvo, 520, pinta); atual = alvo; }
+      if (alvo !== destino) { destino = alvo; anima(alvo, 520); }
     };
 
-    /* pilar ativo = o que estiver cruzando a faixa central da viewport */
-    var pio = new IntersectionObserver(function (entries) {
-      each(entries, function (e) {
-        if (e.isIntersecting) { ativa(parseInt(e.target.getAttribute('data-i'), 10)); }
-      });
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-    each(pilares, function (p) { pio.observe(p); });
+    /* Pilar ativo escolhido pela GEOMETRIA, não pela ordem dos callbacks:
+       entre os pilares que tocam a viewport, vence o de centro mais próximo
+       do centro da tela. Nenhum visível: se todos ainda estão abaixo, volta ao
+       estado inicial (nada percorrido); se todos já passaram, mantém o último.
+       O resultado depende só da posição atual, então é estável sob scroll
+       rápido, salto de âncora e redimensionamento. */
+    var escolhe = function () {
+      var alturaTela = window.innerHeight;
+      var centro = alturaTela / 2;
+      var melhor = -1, menor = Infinity, algumAcima = false;
+      for (var k = 0; k < pilares.length; k++) {
+        var r = pilares[k].getBoundingClientRect();
+        if (r.bottom <= 0) { algumAcima = true; continue; }
+        if (r.top >= alturaTela) { continue; }
+        var d = Math.abs((r.top + r.bottom) / 2 - centro);
+        if (d < menor) { menor = d; melhor = k; }
+      }
+      if (melhor !== -1) { ativa(melhor); }
+      else if (!algumAcima) { ativa(-1); }
+    };
+
+    if (pilares.length) {
+      var pendente = false;
+      var agenda = function () {
+        if (pendente) { return; }
+        pendente = true;
+        requestAnimationFrame(function () { pendente = false; escolhe(); });
+      };
+      window.addEventListener('scroll', agenda, { passive: true });
+      window.addEventListener('resize', agenda);
+      escolhe();
+    }
 
     /* 4. Contagem do número de acurácia na seção de prova */
     var provaNum = document.getElementById('provaNum');
