@@ -55,7 +55,6 @@
     background-position:center;
     transform-origin:center;
     animation:respira 38s ease-in-out infinite alternate;
-    will-change:transform;
   }
   .bg::after{
     content:"";position:absolute;inset:0;
@@ -105,8 +104,10 @@
   /* ---------- RÉGUA CLASE (sticky) ---------- */
   .rail{
     position:sticky;top:0;z-index:60;
-    background:rgba(20,24,28,0.975);
-    backdrop-filter:blur(10px);
+    /* fundo praticamente opaco em vez de backdrop-filter: o blur em elemento
+       sticky é fonte conhecida de cintilação em celular e, a 97,5%, não
+       acrescentava nada visualmente */
+    background:rgba(20,24,28,0.985);
     border-bottom:1px solid var(--line);
     min-height:var(--rail-h);
     display:flex;align-items:center;
@@ -145,12 +146,19 @@
   }
   #pilares,#oferta{scroll-margin-top:calc(var(--rail-h) + 12px);}
 
-  /* ---------- REVELAÇÃO POR SCROLL ---------- */
-  .js .rv{
+  /* ---------- REVELAÇÃO POR SCROLL ----------
+     O conteúdo é visível POR PADRÃO. Só recebe .armed (e portanto some) o
+     bloco que o script comprovou estar abaixo da dobra no momento em que o
+     mecanismo já estava pronto. Assim nenhuma falha, atraso ou exceção do JS
+     pode deixar texto, CTA ou navegação escondidos: no pior caso o conteúdo
+     aparece sem animação. */
+  .rv.armed{
     opacity:0;transform:translateY(16px);
     transition:opacity .62s var(--ease),transform .62s var(--ease);
   }
-  .js .rv.in{opacity:1;transform:none;}
+  .rv.armed.in{opacity:1;transform:none;}
+  /* bloco que o usuário já ultrapassou aparece direto, sem fade tardio */
+  .rv.direto{transition:none;}
 
   /* ---------- HERO ---------- */
   .hero{padding:80px 0 72px;}
@@ -202,15 +210,15 @@
     font-family:'Fraunces',serif;font-size:1.3rem;color:var(--gold);letter-spacing:0;
   }
   /* as 3 unidades que faltam: viram "vazio" ao revelar */
-  .js .gap-units i.miss{opacity:1;}
-  .js .gap.in .gap-units i.miss{
+  .anim .gap-units i.miss{opacity:1;}
+  .anim .gap.in .gap-units i.miss{
     background:transparent;border-color:var(--line-strong);
   }
-  .js .gap.in .gap-units i.miss:nth-child(8){transition-delay:.45s;}
-  .js .gap.in .gap-units i.miss:nth-child(9){transition-delay:.6s;}
-  .js .gap.in .gap-units i.miss:nth-child(10){transition-delay:.75s;}
-  .js .gap .gap-delta{opacity:0;transition:opacity .5s var(--ease) .95s;}
-  .js .gap.in .gap-delta{opacity:1;}
+  .anim .gap.in .gap-units i.miss:nth-child(8){transition-delay:.45s;}
+  .anim .gap.in .gap-units i.miss:nth-child(9){transition-delay:.6s;}
+  .anim .gap.in .gap-units i.miss:nth-child(10){transition-delay:.75s;}
+  .anim .gap .gap-delta{opacity:0;transition:opacity .5s var(--ease) .95s;}
+  .anim .gap.in .gap-delta{opacity:1;}
 
   /* ---------- BLOCOS (caos / ordem) ---------- */
   .blocos{
@@ -221,33 +229,33 @@
     display:block;aspect-ratio:1;
     border:1px solid var(--line-strong);background:rgba(237,232,222,0.04);
   }
-  .js .blocos--ordem i{transition:transform .8s var(--ease),border-color .8s var(--ease);}
+  .anim .blocos--ordem i{transition:transform .8s var(--ease),border-color .8s var(--ease);}
   .blocos--ordem i{border-color:var(--line);}
-  .blocos--caos i:nth-child(1),.js .blocos--ordem i:nth-child(1){transform:translate(3px,-4px) rotate(-9deg);}
-  .blocos--caos i:nth-child(2),.js .blocos--ordem i:nth-child(2){transform:translate(-2px,3px) rotate(7deg);}
-  .blocos--caos i:nth-child(3),.js .blocos--ordem i:nth-child(3){transform:translate(4px,2px) rotate(-4deg);}
-  .blocos--caos i:nth-child(4),.js .blocos--ordem i:nth-child(4){transform:translate(-4px,-3px) rotate(11deg);}
-  .blocos--caos i:nth-child(5),.js .blocos--ordem i:nth-child(5){transform:translate(2px,4px) rotate(-6deg);}
-  .blocos--caos i:nth-child(6),.js .blocos--ordem i:nth-child(6){transform:translate(-3px,-2px) rotate(5deg);}
-  .blocos--caos i:nth-child(7),.js .blocos--ordem i:nth-child(7){transform:translate(-4px,3px) rotate(-12deg);}
-  .blocos--caos i:nth-child(8),.js .blocos--ordem i:nth-child(8){transform:translate(3px,-3px) rotate(8deg);}
-  .blocos--caos i:nth-child(9),.js .blocos--ordem i:nth-child(9){transform:translate(-2px,-4px) rotate(-5deg);}
-  .blocos--caos i:nth-child(10),.js .blocos--ordem i:nth-child(10){transform:translate(4px,3px) rotate(10deg);}
-  .blocos--caos i:nth-child(11),.js .blocos--ordem i:nth-child(11){transform:translate(-3px,2px) rotate(-7deg);}
-  .blocos--caos i:nth-child(12),.js .blocos--ordem i:nth-child(12){transform:translate(2px,-2px) rotate(6deg);}
-  .js .blocos--ordem i:nth-child(2){transition-delay:.06s;}
-  .js .blocos--ordem i:nth-child(3){transition-delay:.12s;}
-  .js .blocos--ordem i:nth-child(4){transition-delay:.18s;}
-  .js .blocos--ordem i:nth-child(5){transition-delay:.24s;}
-  .js .blocos--ordem i:nth-child(6){transition-delay:.3s;}
-  .js .blocos--ordem i:nth-child(7){transition-delay:.36s;}
-  .js .blocos--ordem i:nth-child(8){transition-delay:.42s;}
-  .js .blocos--ordem i:nth-child(9){transition-delay:.48s;}
-  .js .blocos--ordem i:nth-child(10){transition-delay:.54s;}
-  .js .blocos--ordem i:nth-child(11){transition-delay:.6s;}
-  .js .blocos--ordem i:nth-child(12){transition-delay:.66s;}
+  .blocos--caos i:nth-child(1),.anim .blocos--ordem i:nth-child(1){transform:translate(3px,-4px) rotate(-9deg);}
+  .blocos--caos i:nth-child(2),.anim .blocos--ordem i:nth-child(2){transform:translate(-2px,3px) rotate(7deg);}
+  .blocos--caos i:nth-child(3),.anim .blocos--ordem i:nth-child(3){transform:translate(4px,2px) rotate(-4deg);}
+  .blocos--caos i:nth-child(4),.anim .blocos--ordem i:nth-child(4){transform:translate(-4px,-3px) rotate(11deg);}
+  .blocos--caos i:nth-child(5),.anim .blocos--ordem i:nth-child(5){transform:translate(2px,4px) rotate(-6deg);}
+  .blocos--caos i:nth-child(6),.anim .blocos--ordem i:nth-child(6){transform:translate(-3px,-2px) rotate(5deg);}
+  .blocos--caos i:nth-child(7),.anim .blocos--ordem i:nth-child(7){transform:translate(-4px,3px) rotate(-12deg);}
+  .blocos--caos i:nth-child(8),.anim .blocos--ordem i:nth-child(8){transform:translate(3px,-3px) rotate(8deg);}
+  .blocos--caos i:nth-child(9),.anim .blocos--ordem i:nth-child(9){transform:translate(-2px,-4px) rotate(-5deg);}
+  .blocos--caos i:nth-child(10),.anim .blocos--ordem i:nth-child(10){transform:translate(4px,3px) rotate(10deg);}
+  .blocos--caos i:nth-child(11),.anim .blocos--ordem i:nth-child(11){transform:translate(-3px,2px) rotate(-7deg);}
+  .blocos--caos i:nth-child(12),.anim .blocos--ordem i:nth-child(12){transform:translate(2px,-2px) rotate(6deg);}
+  .anim .blocos--ordem i:nth-child(2){transition-delay:.06s;}
+  .anim .blocos--ordem i:nth-child(3){transition-delay:.12s;}
+  .anim .blocos--ordem i:nth-child(4){transition-delay:.18s;}
+  .anim .blocos--ordem i:nth-child(5){transition-delay:.24s;}
+  .anim .blocos--ordem i:nth-child(6){transition-delay:.3s;}
+  .anim .blocos--ordem i:nth-child(7){transition-delay:.36s;}
+  .anim .blocos--ordem i:nth-child(8){transition-delay:.42s;}
+  .anim .blocos--ordem i:nth-child(9){transition-delay:.48s;}
+  .anim .blocos--ordem i:nth-child(10){transition-delay:.54s;}
+  .anim .blocos--ordem i:nth-child(11){transition-delay:.6s;}
+  .anim .blocos--ordem i:nth-child(12){transition-delay:.66s;}
   /* precisa vir DEPOIS das regras nth-child: mesma especificidade, ordem decide */
-  .js .blocos--ordem.in i:nth-child(n){transform:none;border-color:var(--gold);}
+  .anim .blocos--ordem.in i:nth-child(n){transform:none;border-color:var(--gold);}
 
   /* ---------- CENA DA DOR ---------- */
   .cena{background:var(--bg-panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
@@ -260,10 +268,10 @@
   }
   .cena-step:last-child{border-left-color:var(--brick);color:var(--cream);}
   .cena-step b{color:var(--cream);font-weight:500;}
-  .js .cena-step{transition-duration:.55s;}
-  .js .cena-step:nth-child(2){transition-delay:.1s;}
-  .js .cena-step:nth-child(3){transition-delay:.2s;}
-  .js .cena-step:nth-child(4){transition-delay:.3s;}
+  .anim .cena-step{transition-duration:.55s;}
+  .anim .cena-step:nth-child(2){transition-delay:.1s;}
+  .anim .cena-step:nth-child(3){transition-delay:.2s;}
+  .anim .cena-step:nth-child(4){transition-delay:.3s;}
   .cena-after{
     margin-top:40px;max-width:56ch;color:var(--muted);
   }
@@ -285,15 +293,15 @@
     transition:border-color .3s var(--ease),color .3s var(--ease),transform .3s var(--ease);
   }
   .causa:hover{border-color:var(--line-strong);color:var(--cream);}
-  .js .causa{transition-duration:.5s;}
-  .js .causa:nth-child(2){transition-delay:.05s;}
-  .js .causa:nth-child(3){transition-delay:.1s;}
-  .js .causa:nth-child(4){transition-delay:.15s;}
-  .js .causa:nth-child(5){transition-delay:.2s;}
-  .js .causa:nth-child(6){transition-delay:.25s;}
-  .js .causa:nth-child(7){transition-delay:.3s;}
-  .js .causa:nth-child(8){transition-delay:.35s;}
-  .js .causa:nth-child(9){transition-delay:.4s;}
+  .anim .causa{transition-duration:.5s;}
+  .anim .causa:nth-child(2){transition-delay:.05s;}
+  .anim .causa:nth-child(3){transition-delay:.1s;}
+  .anim .causa:nth-child(4){transition-delay:.15s;}
+  .anim .causa:nth-child(5){transition-delay:.2s;}
+  .anim .causa:nth-child(6){transition-delay:.25s;}
+  .anim .causa:nth-child(7){transition-delay:.3s;}
+  .anim .causa:nth-child(8){transition-delay:.35s;}
+  .anim .causa:nth-child(9){transition-delay:.4s;}
 
   /* ---------- PILARES ---------- */
   .pilares{background:var(--bg-panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
@@ -328,19 +336,19 @@
   .pilar.now .pv > *{stroke:var(--cream);}
   .pilar.now .pv .hi{stroke:var(--gold);}
   .pilar.now .pv .fillhi{stroke:none;}
-  .js .pv .dash{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset .9s var(--ease);}
-  .js .pilar.in .pv .dash{stroke-dashoffset:0;}
-  .js .pv .dash:nth-of-type(2){transition-delay:.07s;}
-  .js .pv .dash:nth-of-type(3){transition-delay:.14s;}
-  .js .pv .dash:nth-of-type(4){transition-delay:.21s;}
-  .js .pv .dash:nth-of-type(5){transition-delay:.28s;}
-  .js .pv .dash:nth-of-type(6){transition-delay:.35s;}
-  .js .pv .pop{opacity:0;transition:opacity .5s var(--ease) .5s;}
-  .js .pilar.in .pv .pop{opacity:1;}
-  .js .pv .slide{transform:translateX(-16px);transition:transform .7s var(--ease);}
-  .js .pv .slide:nth-of-type(2){transition-delay:.1s;}
-  .js .pv .slide:nth-of-type(3){transition-delay:.2s;}
-  .js .pilar.in .pv .slide{transform:none;}
+  .anim .pv .dash{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset .9s var(--ease);}
+  .anim .pilar.in .pv .dash{stroke-dashoffset:0;}
+  .anim .pv .dash:nth-of-type(2){transition-delay:.07s;}
+  .anim .pv .dash:nth-of-type(3){transition-delay:.14s;}
+  .anim .pv .dash:nth-of-type(4){transition-delay:.21s;}
+  .anim .pv .dash:nth-of-type(5){transition-delay:.28s;}
+  .anim .pv .dash:nth-of-type(6){transition-delay:.35s;}
+  .anim .pv .pop{opacity:0;transition:opacity .5s var(--ease) .5s;}
+  .anim .pilar.in .pv .pop{opacity:1;}
+  .anim .pv .slide{transform:translateX(-16px);transition:transform .7s var(--ease);}
+  .anim .pv .slide:nth-of-type(2){transition-delay:.1s;}
+  .anim .pv .slide:nth-of-type(3){transition-delay:.2s;}
+  .anim .pilar.in .pv .slide{transform:none;}
 
   /* ---------- FRASE ---------- */
   .frase{padding:88px 0;}
@@ -398,11 +406,11 @@
     content:"";position:absolute;left:0;top:11px;
     width:8px;height:1px;background:var(--brick-bright);
   }
-  .js .para-quem li{transition-duration:.5s;}
-  .js .para-quem li:nth-child(2){transition-delay:.07s;}
-  .js .para-quem li:nth-child(3){transition-delay:.14s;}
-  .js .para-quem li:nth-child(4){transition-delay:.21s;}
-  .js .para-quem li:nth-child(5){transition-delay:.28s;}
+  .anim .para-quem li{transition-duration:.5s;}
+  .anim .para-quem li:nth-child(2){transition-delay:.07s;}
+  .anim .para-quem li:nth-child(3){transition-delay:.14s;}
+  .anim .para-quem li:nth-child(4){transition-delay:.21s;}
+  .anim .para-quem li:nth-child(5){transition-delay:.28s;}
 
   /* ---------- CTA FINAL ---------- */
   .final{padding:88px 0;}
@@ -433,12 +441,12 @@
   /* ---------- MOVIMENTO REDUZIDO ---------- */
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
-    .js .rv,.js .rv.in{opacity:1!important;transform:none!important;}
-    .js .gap .gap-delta{opacity:1!important;}
-    .js .blocos--ordem i{transform:none!important;}
-    .js .pv .dash{stroke-dashoffset:0!important;}
-    .js .pv .pop{opacity:1!important;}
-    .js .pv .slide{transform:none!important;}
+    .rv,.rv.armed{opacity:1!important;transform:none!important;}
+    .anim .gap .gap-delta{opacity:1!important;}
+    .anim .blocos--ordem i{transform:none!important;}
+    .anim .pv .dash{stroke-dashoffset:0!important;}
+    .anim .pv .pop{opacity:1!important;}
+    .anim .pv .slide{transform:none!important;}
     .rail{transition:none;}
     .bg,.bg::after{animation:none!important;transform:none!important;}
     .causa:hover,.diag:hover,.btn-primary:hover,.btn-ghost:hover,.topbar-cta:hover,
@@ -697,25 +705,66 @@
 (function () {
   var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
   var revealables = document.querySelectorAll('.rv');
-  var showAll = function () { each(revealables, function (el) { el.classList.add('in'); }); };
+  var showAll = function () {
+    each(revealables, function (el) { el.classList.remove('armed'); el.classList.add('in'); });
+    document.documentElement.classList.remove('anim');
+  };
 
   try {
+    /* só agora os estados iniciais das animações passam a valer: se este
+       script não rodar ou lançar exceção, nada fica escondido. */
+    document.documentElement.classList.add('anim');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* Sem IntersectionObserver: entrega tudo visível, sem animação. */
     if (!('IntersectionObserver' in window)) { showAll(); return; }
 
-    /* 1. Revelação por scroll */
-    if (reduce) {
-      showAll();
-    } else {
-      var io = new IntersectionObserver(function (entries) {
-        each(entries, function (e) {
-          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-      each(revealables, function (el) { io.observe(el); });
-    }
+    /* 1. Revelação por scroll, decidida pela GEOMETRIA.
+          Não se pode depender das transições do IntersectionObserver aqui: num
+          scroll rápido de celular (ou num salto de âncora, ou numa recarga com
+          a posição restaurada) uma seção inteira passa entre dois quadros sem
+          nunca intersectar, ficaria em opacity:0 para sempre e só reapareceria
+          ao voltar — que é justamente o "conteúdo some e pisca".
+          Aqui basta a posição atual: tudo que já cruzou a linha de revelação,
+          inclusive o que ficou acima da tela, entra revelado. */
+    var pendentes = [];
+
+    /* Arma o mecanismo: esconde SOMENTE o que está abaixo da dobra agora.
+       O que já está na tela (ou acima) nunca é escondido — nasce visível e
+       assim permanece. Todo bloco recebe .in, porque as animações internas
+       (gap, blocos, micro-visuais dos pilares) dependem dessa classe. */
+    var arma = function () {
+      var linha = window.innerHeight * 0.92;
+      each(revealables, function (el) {
+        if (el.getBoundingClientRect().top >= linha) {
+          el.classList.add('armed');
+          pendentes.push(el);
+        } else {
+          el.classList.add('in');
+        }
+      });
+    };
+
+    var revela = function () {
+      if (!pendentes.length) { return; }
+      var linha = window.innerHeight * 0.92;
+      var restantes = [];
+      for (var k = 0; k < pendentes.length; k++) {
+        var el = pendentes[k];
+        var r = el.getBoundingClientRect();
+        if (r.top < linha) {
+          /* já ficou para trás (recarga com posição restaurada, salto de
+             âncora, scroll muito rápido): aparece direto, sem fade tardio */
+          if (r.bottom <= 0) { el.classList.add('direto'); }
+          el.classList.add('in');
+        } else {
+          restantes.push(el);
+        }
+      }
+      pendentes = restantes;   /* a lista encolhe até zero: custo some */
+    };
+
+    if (reduce) { showAll(); } else { arma(); }
 
     /* 2. Régua CLASE: aparece assim que o hero sai de vista.
           Observa o hero (elemento alto, visível no carregamento) em vez de um
@@ -803,17 +852,60 @@
       else if (!algumAcima) { ativa(-1); }
     };
 
-    if (pilares.length) {
-      var pendente = false;
-      var agenda = function () {
-        if (pendente) { return; }
-        pendente = true;
-        requestAnimationFrame(function () { pendente = false; escolhe(); });
-      };
-      window.addEventListener('scroll', agenda, { passive: true });
-      window.addEventListener('resize', agenda);
-      escolhe();
+    /* Um único laço, limitado a um quadro: revela o que entrou e recalcula
+       o pilar ativo. Ambos derivam só da posição atual, então scroll rápido,
+       salto de âncora, recarga com posição restaurada e resize convergem
+       todos para o mesmo estado correto. */
+    var agendado = false;
+    var executa = function () {
+      agendado = false;
+      try {
+        revela();
+        if (pilares.length) { escolhe(); }
+      } catch (e) {
+        showAll();   /* qualquer exceção devolve a página ao estado estático completo */
+      }
+    };
+    var atualiza = function () {
+      if (agendado) { return; }
+      agendado = true;
+      try {
+        requestAnimationFrame(executa);
+      } catch (e) {
+        /* sem rAF utilizável: roda direto, sem limitar por quadro */
+        executa();
+      }
+    };
+    window.addEventListener('scroll', atualiza, { passive: true });
+    window.addEventListener('resize', atualiza);
+    window.addEventListener('orientationchange', atualiza);
+    /* pageshow cobre a volta pelo histórico com cache (bfcache) */
+    window.addEventListener('pageshow', atualiza);
+    /* O navegador restaura a posição do scroll DEPOIS deste script rodar, e as
+       fontes ainda podem deslocar o layout. Sem estas passadas extras, uma
+       recarga com a página já rolada deixaria tudo acima da posição em
+       opacity:0. As varreduras são idempotentes e a lista de pendentes só
+       encolhe, então repetir não custa nada. */
+    window.addEventListener('load', atualiza);
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+      document.fonts.ready.then(atualiza);
     }
+    setTimeout(atualiza, 150);
+    setTimeout(atualiza, 700);
+
+    /* Rede de segurança: se depois de 3s ainda houver bloco armado que já
+       deveria estar visível, o mecanismo falhou de alguma forma imprevista —
+       a página volta inteira ao estado estático. Vale a legibilidade, não a
+       animação. */
+    setTimeout(function () {
+      try {
+        for (var k = 0; k < pendentes.length; k++) {
+          if (pendentes[k].getBoundingClientRect().top < window.innerHeight) { showAll(); return; }
+        }
+      } catch (e) { showAll(); }
+    }, 3000);
+
+    executa();
 
     /* 4. Contagem do número de acurácia na seção de prova */
     var provaNum = document.getElementById('provaNum');
