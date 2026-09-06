@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método CLASE — Confiabilidade de estoque | D'Sousa Soluções</title>
+<meta name="description" content="Metodologia de confiabilidade de estoque em cinco pilares. Para operações que já têm ERP mas não confiam no saldo que aparece no sistema.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#14181c;
+    --bg-panel:#1b2026;
+    --bg-panel-2:#20262d;
+    --brick:#a13d2e;
+    --brick-bright:#c4523f;
+    --gold:#c9a227;
+    --cream:#ede8de;
+    --muted:#9aa1a9;
+    --line:rgba(237,232,222,0.12);
+    --radius:2px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-deep);
+    color:var(--cream);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;line-height:1.15;letter-spacing:-0.01em;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+  @media(min-width:720px){ .wrap{padding:0 48px;} }
+  section{padding:72px 0;}
+
+  /* ---------- TOPO ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    padding:16px 0;
+  }
+  .topbar-inner{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .apresenta{font-size:0.8rem;color:var(--muted);}
+  .apresenta b{
+    font-family:'Fraunces',serif;
+    color:var(--cream);
+    font-weight:600;
+  }
+  .apresenta b .ds{color:var(--brick-bright);}
+  .topbar-cta{
+    font-size:0.82rem;border:1px solid var(--gold);color:var(--gold);
+    padding:8px 16px;border-radius:var(--radius);
+  }
+  .topbar-cta:hover{background:var(--gold);color:var(--bg-deep);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:80px 0 72px;}
+  .hero h1{font-size:2.2rem;max-width:15ch;margin-bottom:24px;}
+  @media(min-width:720px){ .hero h1{font-size:3.4rem;} }
+  .hero .sub{color:var(--muted);font-size:1.05rem;max-width:52ch;margin-bottom:34px;}
+  .btn-primary{
+    display:inline-block;background:var(--brick);color:var(--cream);
+    padding:15px 28px;border-radius:var(--radius);font-weight:500;font-size:0.95rem;
+  }
+  .btn-primary:hover{background:var(--brick-bright);}
+  .btn-ghost{
+    display:inline-block;padding:15px 28px;border:1px solid var(--line);
+    border-radius:var(--radius);font-size:0.95rem;
+  }
+  .btn-ghost:hover{border-color:var(--cream);}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;}
+
+  /* ---------- CENA DA DOR ---------- */
+  .cena{background:var(--bg-panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .cena-steps{display:grid;gap:0;max-width:660px;}
+  .cena-step{
+    padding:20px 0 20px 28px;
+    border-left:2px solid var(--line);
+    position:relative;
+    color:var(--muted);
+  }
+  .cena-step:last-child{border-left-color:var(--brick);color:var(--cream);}
+  .cena-step b{color:var(--cream);font-weight:500;}
+  .cena-after{
+    margin-top:40px;max-width:56ch;color:var(--muted);
+  }
+  .cena-after strong{color:var(--cream);font-weight:500;}
+
+  /* ---------- SEÇÕES ---------- */
+  .head{max-width:56ch;margin-bottom:44px;}
+  .head .kicker{color:var(--gold);font-size:0.85rem;margin-bottom:10px;}
+  .head h2{font-size:1.8rem;}
+  @media(min-width:720px){ .head h2{font-size:2.2rem;} }
+  .head p{color:var(--muted);margin-top:16px;}
+
+  .causas{display:grid;gap:12px;}
+  @media(min-width:640px){ .causas{grid-template-columns:repeat(2,1fr);} }
+  @media(min-width:900px){ .causas{grid-template-columns:repeat(3,1fr);} }
+  .causa{
+    padding:16px 18px;border:1px solid var(--line);
+    color:var(--muted);font-size:0.92rem;
+  }
+
+  /* ---------- PILARES ---------- */
+  .pilares{background:var(--bg-panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .pilar{
+    display:grid;grid-template-columns:auto 1fr;gap:20px;
+    padding:30px 0;border-top:1px solid var(--line);align-items:start;
+  }
+  .pilar:last-child{border-bottom:1px solid var(--line);}
+  @media(min-width:720px){ .pilar{grid-template-columns:auto 1fr 1.1fr;gap:36px;} }
+  .pilar-letra{
+    font-family:'Fraunces',serif;font-size:2.4rem;color:var(--brick-bright);
+    line-height:1;width:1.4em;
+  }
+  .pilar-nome{font-family:'Fraunces',serif;font-size:1.25rem;margin-bottom:6px;}
+  .pilar-desc{color:var(--muted);font-size:0.94rem;}
+  .pilar-sintoma{
+    color:var(--muted);font-size:0.9rem;
+    border-left:2px solid var(--line);padding-left:16px;
+    grid-column:1 / -1;
+  }
+  @media(min-width:720px){ .pilar-sintoma{grid-column:auto;} }
+  .pilar-sintoma span{display:block;color:var(--gold);font-size:0.78rem;margin-bottom:6px;}
+
+  /* ---------- FRASE ---------- */
+  .frase{padding:88px 0;}
+  .frase p{
+    font-family:'Fraunces',serif;font-size:1.6rem;line-height:1.35;max-width:22ch;
+  }
+  @media(min-width:720px){ .frase p{font-size:2.3rem;max-width:24ch;} }
+  .frase p .dim{color:var(--muted);}
+
+  /* ---------- PROVA ---------- */
+  .prova{background:var(--bg-panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .prova-grid{display:grid;gap:32px;}
+  @media(min-width:800px){ .prova-grid{grid-template-columns:1.2fr 1fr;gap:64px;align-items:center;} }
+  .prova-texto p{color:var(--muted);margin-bottom:16px;max-width:52ch;}
+  .prova-texto p strong{color:var(--cream);font-weight:500;}
+  .prova-num{border-left:2px solid var(--brick);padding-left:24px;}
+  .prova-num strong{
+    display:block;font-family:'Fraunces',serif;font-size:2.4rem;color:var(--gold);line-height:1;
+  }
+  .prova-num span{display:block;color:var(--muted);font-size:0.9rem;margin-top:10px;max-width:34ch;}
+
+  /* ---------- DIAGNÓSTICO ---------- */
+  .diag{
+    border:1px solid var(--line);padding:28px;
+    display:grid;gap:14px;max-width:620px;
+  }
+  .diag .tag{color:var(--gold);font-size:0.8rem;}
+  .diag h3{font-size:1.35rem;}
+  .diag p{color:var(--muted);font-size:0.94rem;}
+
+  /* ---------- OFERTA ---------- */
+  .oferta{
+    background:var(--bg-panel-2);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .oferta-ponte{
+    color:var(--muted);max-width:56ch;margin-bottom:36px;font-size:1rem;
+  }
+  .oferta-ponte strong{color:var(--cream);font-weight:500;}
+  .oferta h2{font-size:2rem;margin-bottom:18px;}
+  @media(min-width:720px){ .oferta h2{font-size:2.6rem;} }
+  .oferta .desc{color:var(--muted);max-width:54ch;margin-bottom:34px;}
+  .para-quem{display:grid;gap:10px;max-width:640px;margin-bottom:38px;}
+  .para-quem li{
+    list-style:none;color:var(--muted);font-size:0.94rem;
+    padding-left:22px;position:relative;
+  }
+  .para-quem li::before{
+    content:"";position:absolute;left:0;top:11px;
+    width:8px;height:1px;background:var(--brick-bright);
+  }
+
+  /* ---------- CTA FINAL ---------- */
+  .final{padding:88px 0;}
+  .final h2{font-size:1.9rem;max-width:20ch;margin-bottom:18px;}
+  @media(min-width:720px){ .final h2{font-size:2.4rem;} }
+  .final p{color:var(--muted);max-width:48ch;margin-bottom:32px;}
+
+  footer{border-top:1px solid var(--line);padding:28px 0 40px;}
+  .footer-inner{color:var(--muted);font-size:0.8rem;display:flex;flex-direction:column;gap:6px;}
+  @media(min-width:720px){ .footer-inner{flex-direction:row;justify-content:space-between;} }
+
+  @media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="apresenta">D'Sousa Soluções apresenta <b><span class="ds">Método</span> CLASE</b></div>
+    <a class="topbar-cta" href="https://wa.me/556696029950" target="_blank" rel="noopener">Falar sobre a turma</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Seu estoque realmente bate com o sistema?</h1>
+    <p class="sub">Se a resposta é "quase sempre", sua empresa está tomando decisões de compra, venda e capital de giro em cima de um número que ninguém confia por completo.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#oferta">Conhecer a primeira turma</a>
+      <a class="btn-ghost" href="#pilares">Entender o método</a>
+    </div>
+  </div>
+</section>
+
+<section class="cena">
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">O problema</p>
+      <h2>A cena que se repete toda semana</h2>
+    </div>
+    <div class="cena-steps">
+      <div class="cena-step">O sistema mostra <b>10 unidades</b> disponíveis.</div>
+      <div class="cena-step">O vendedor promete o produto ao cliente.</div>
+      <div class="cena-step">Alguém vai buscar na prateleira e encontra <b>7</b>.</div>
+      <div class="cena-step">Começa a procura por um culpado: estoque, vendedor, compras, sistema, gestão.</div>
+    </div>
+    <p class="cena-after">Só que a divergência não nasceu ali. Ela foi criada dias ou semanas antes — e <strong>enquanto ninguém souber onde, ela vai voltar no próximo mês.</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">Por que o ERP sozinho não resolve</p>
+      <h2>O sistema registra o que a operação informa</h2>
+      <p>Um ERP não erra sozinho. Ele reflete o que foi registrado — ou o que deixou de ser. A divergência quase sempre nasce em um destes pontos:</p>
+    </div>
+    <div class="causas">
+      <div class="causa">Recebimento conferido por cima</div>
+      <div class="causa">Separação sem baixa correta</div>
+      <div class="causa">Devolução que não voltou ao saldo</div>
+      <div class="causa">Transferência entre depósitos sem registro</div>
+      <div class="causa">Fracionamento de embalagem</div>
+      <div class="causa">Retirada sem documento</div>
+      <div class="causa">Armazenagem que mistura itens parecidos</div>
+      <div class="causa">Cadastro duplicado ou unidade errada</div>
+      <div class="causa">Ausência de rotina de contagem</div>
+    </div>
+  </div>
+</section>
+
+<section class="pilares" id="pilares">
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">A metodologia</p>
+      <h2>Método CLASE: cinco pilares de confiabilidade</h2>
+      <p>Cada letra representa uma frente que precisa funcionar para que o estoque físico e o saldo do sistema falem a mesma língua.</p>
+    </div>
+
+    <div class="pilar">
+      <div class="pilar-letra">C</div>
+      <div>
+        <div class="pilar-nome">Contagem</div>
+        <div class="pilar-desc">Rotinas de contagem cíclica, identificação de divergências e controle da acurácia ao longo do ano.</div>
+      </div>
+      <div class="pilar-sintoma"><span>Sintoma típico</span>Só se conta uma vez por ano, para o contador — e o número nunca bate.</div>
+    </div>
+
+    <div class="pilar">
+      <div class="pilar-letra">L</div>
+      <div>
+        <div class="pilar-nome">Localização</div>
+        <div class="pilar-desc">Endereçamento e organização das posições, para que qualquer pessoa encontre, conte e audite sem depender de memória.</div>
+      </div>
+      <div class="pilar-sintoma"><span>Sintoma típico</span>Só um funcionário sabe onde as coisas estão. Se ele falta, a operação trava.</div>
+    </div>
+
+    <div class="pilar">
+      <div class="pilar-letra">A</div>
+      <div>
+        <div class="pilar-nome">Armazenagem</div>
+        <div class="pilar-desc">Organização física que reduz mistura de itens, avarias, perdas e erros de separação.</div>
+      </div>
+      <div class="pilar-sintoma"><span>Sintoma típico</span>Itens parecidos guardados juntos, saindo trocados sem ninguém perceber.</div>
+    </div>
+
+    <div class="pilar">
+      <div class="pilar-letra">S</div>
+      <div>
+        <div class="pilar-nome">Sistêmico</div>
+        <div class="pilar-desc">Disciplina de registro, movimentação e responsabilidade, para que o físico se reflita corretamente no ERP.</div>
+      </div>
+      <div class="pilar-sintoma"><span>Sintoma típico</span>Mercadoria sai primeiro e o registro fica "para depois" — quando fica.</div>
+    </div>
+
+    <div class="pilar">
+      <div class="pilar-letra">E</div>
+      <div>
+        <div class="pilar-nome">Excelência</div>
+        <div class="pilar-desc">Indicadores, análise de causa, treinamento e melhoria contínua até virar cultura, não esforço isolado.</div>
+      </div>
+      <div class="pilar-sintoma"><span>Sintoma típico</span>Corrige-se o saldo, todo mundo comemora, e três meses depois o erro voltou.</div>
+    </div>
+  </div>
+</section>
+
+<section class="frase">
+  <div class="wrap">
+    <p>Ajustar o saldo corrige o número.<br><span class="dim">Corrigir o processo evita que o erro volte.</span></p>
+  </div>
+</section>
+
+<section class="prova">
+  <div class="wrap prova-grid">
+    <div class="prova-texto">
+      <p class="kicker" style="color:var(--gold);font-size:0.85rem;margin-bottom:10px;">De onde vem o método</p>
+      <p>O Método CLASE nasceu da prática, não da teoria. Foi estruturado a partir de <strong>mais de uma década de experiência em operações reais de distribuição</strong> — recebimento, endereçamento, contagem cíclica, inventário, ERP e correção de processos que produziam divergência.</p>
+      <p>Método desenvolvido por <strong>Igor D'Sousa</strong>, dentro da D'Sousa Soluções.</p>
+    </div>
+    <div class="prova-num">
+      <strong>+99%</strong>
+      <span>Nível de acurácia alcançado em operação real com a aplicação dos princípios que deram origem ao método.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="diag">
+      <div class="tag">Em desenvolvimento</div>
+      <h3>Diagnóstico CLASE</h3>
+      <p>Uma avaliação curta que mede sua operação nos cinco pilares e aponta qual deles é o seu maior gargalo hoje — antes de qualquer decisão de compra.</p>
+      <p style="color:var(--cream);font-size:0.9rem;">Em breve disponível nesta página.</p>
+    </div>
+  </div>
+</section>
+
+<section class="oferta" id="oferta">
+  <div class="wrap">
+    <p class="oferta-ponte">O Método CLASE é maior do que qualquer turma ou produto — ele vai continuar sendo aplicado em diagnósticos, treinamentos, consultorias e ferramentas. <strong>Mas se você quer começar a aplicá-lo agora, esta é a porta de entrada:</strong></p>
+
+    <p class="kicker" style="color:var(--gold);font-size:0.85rem;margin-bottom:10px;">Primeira turma</p>
+    <h2>Fim do Caos no Estoque</h2>
+    <p class="desc">Uma jornada prática de implementação do Método CLASE, para transformar um estoque divergente em uma operação organizada e confiável. Não é um curso para assistir — é uma turma para aplicar na sua operação, com acompanhamento.</p>
+
+    <ul class="para-quem">
+      <li>Para quem já tem ERP, mas confere no físico antes de prometer ao cliente</li>
+      <li>Para quem faz inventário e sempre encontra diferença, sem saber a origem</li>
+      <li>Para quem corrige o saldo e vê a divergência voltar meses depois</li>
+      <li>Para quem compra com informação ruim e descobre o erro tarde demais</li>
+      <li>Para quem tem muitos SKUs e nenhuma rotina de contagem estruturada</li>
+    </ul>
+
+    <a class="btn-primary" href="https://wa.me/556696029950?text=Ol%C3%A1%20Igor%2C%20quero%20saber%20mais%20sobre%20a%20turma%20Fim%20do%20Caos%20no%20Estoque." target="_blank" rel="noopener">Quero saber mais sobre a turma</a>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Estoque confiável gera decisões confiáveis.</h2>
+    <p>Me conte em uma mensagem como está o estoque da sua operação hoje. A partir disso eu te explico como a turma funciona e se ela faz sentido para o seu caso.</p>
+    <a class="btn-primary" href="https://wa.me/556696029950?text=Ol%C3%A1%20Igor%2C%20vim%20pela%20p%C3%A1gina%20do%20M%C3%A9todo%20CLASE." target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>Método CLASE · uma metodologia D'Sousa Soluções</div>
+    <div>Rondonópolis, MT · dsousasolucoes.com.br</div>
+  </div>
+</footer>
+
+</body>
+</html>
